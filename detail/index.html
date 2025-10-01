@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Online Museum – Artwork Detail</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root {
+      --bg-main: #f3f6f7;
+      --bg-card: #222c34;
+      --accent: #4682b4;
+      --border-card: #4682b4;
+      --text-main: #1c232b;
+      --text-light: #fff;
+      --shadow: 0 2px 16px rgba(34,44,52,0.10);
+    }
+    body {
+      margin: 0;
+      background: var(--bg-main);
+      font-family: 'Inter', Arial, sans-serif;
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .museum-label {
+      width: 100%;
+      background: var(--accent);
+      color: var(--text-light);
+      font-size: 1.7rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      padding: 22px 0 14px 0;
+      text-align: right;
+      border-bottom-left-radius: 12px;
+      box-shadow: var(--shadow);
+    }
+    .main-flex {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      align-items: center;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+      padding: 2vw 0 90px 0;
+    }
+    .artwork-img-area {
+      background: var(--bg-card);
+      border: 6px solid var(--border-card);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 350px;
+      height: 58vh;
+      margin: 0 2vw 0 2vw;
+      overflow: hidden;
+      position: relative;
+    }
+    .artwork-img-area img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      border-radius: 12px;
+      background: #fff;
+      box-shadow: 0 2px 12px rgba(68,130,180,0.07);
+    }
+    .artwork-info-card {
+      background: var(--bg-card);
+      color: var(--text-light);
+      border: 6px solid var(--border-card);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      padding: 48px 36px 36px 36px;
+      margin-right: 2vw;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      min-height: 350px;
+      justify-content: center;
+      align-items: flex-start;
+    }
+    .artwork-title {
+      font-size: 2.7rem;
+      font-weight: 900;
+      margin-bottom: 8px;
+      color: var(--accent);
+      text-shadow: 0 2px 8px rgba(68,130,180,0.11);
+    }
+    .artwork-desc {
+      font-size: 1.18rem;
+      line-height: 1.7;
+      opacity: 0.95;
+      font-weight: 400;
+      letter-spacing: 0.01em;
+      text-align: left;
+      text-shadow: 0 1px 4px rgba(68,130,180,0.05);
+    }
+    .view-btn {
+      position: absolute;
+      left: 2vw;
+      bottom: 30px;
+      background: var(--accent);
+      color: var(--text-light);
+      font-weight: 700;
+      font-size: 1.4rem;
+      letter-spacing: 0.06em;
+      padding: 13px 44px;
+      border-radius: 7px;
+      border: none;
+      box-shadow: 0 4px 24px rgba(68,130,180,0.13);
+      cursor: pointer;
+      text-transform: uppercase;
+      transition: background 0.19s, box-shadow 0.19s;
+      outline: none;
+      z-index: 5;
+    }
+    .view-btn:hover, .view-btn:focus {
+      background: #315d82;
+      box-shadow: 0 2px 22px rgba(68,130,180,0.19);
+    }
+    .bottom-bar {
+      width: 100vw;
+      position: fixed;
+      left: 0; bottom: 0;
+      background: var(--bg-card);
+      display: flex;
+      align-items: center;
+      min-height: 54px;
+      justify-content: center;
+      z-index: 200;
+      box-shadow: 0 -2px 12px rgba(68,130,180,0.12);
+      border-top: 2px solid var(--accent);
+    }
+    .nav-links {
+      display: flex;
+      gap: 40px;
+    }
+    .nav-link {
+      color: var(--text-light);
+      text-decoration: none;
+      font-size: 1.15rem;
+      font-weight: 600;
+      padding: 9px 32px;
+      border-radius: 7px;
+      background: transparent;
+      transition: background 0.18s, color 0.18s;
+      text-transform: uppercase;
+      outline: none;
+      border: none;
+      cursor: pointer;
+    }
+    .nav-link:hover, .nav-link:focus {
+      background: var(--accent);
+      color: #fff;
+    }
+    @media (max-width: 900px) {
+      .main-flex {
+        grid-template-columns: 1fr;
+        padding: 2vw 0 90px 0;
+      }
+      .artwork-img-area, .artwork-info-card {
+        margin: 0 4vw 18px 4vw;
+        min-height: 260px;
+        height: auto;
+      }
+      .artwork-info-card {
+        padding: 28px 16px 22px 16px;
+      }
+      .artwork-title {
+        font-size: 1.7rem;
+      }
+      .artwork-desc {
+        font-size: 1rem;
+      }
+      .view-btn {
+        font-size: 1rem;
+        padding: 9px 28px;
+        left: 4vw;
+        bottom: 18px;
+      }
+    }
+    @media (max-width: 600px) {
+      .museum-label {
+        font-size: 1.14rem;
+        padding: 10px 0 6px 0;
+        border-radius: 0 0 8px 0;
+      }
+      .main-flex {
+        padding: 0 0 74px 0;
+      }
+      .artwork-img-area, .artwork-info-card {
+        margin: 0 2vw 14px 2vw;
+        border-radius: 10px;
+        border-width: 3px;
+        min-height: 160px;
+      }
+      .artwork-info-card {
+        padding: 12px 6vw 14px 6vw;
+        gap: 16px;
+      }
+      .artwork-title {
+        font-size: 1.08rem;
+        margin-bottom: 4px;
+      }
+      .artwork-desc {
+        font-size: 0.93rem;
+      }
+      .view-btn {
+        font-size: 0.9rem;
+        padding: 7px 14px;
+        left: 6vw;
+        bottom: 10px;
+      }
+      .nav-link {
+        padding: 6px 12px;
+        font-size: 0.88rem;
+      }
+      .bottom-bar {
+        min-height: 36px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="museum-label">Online Museum</div>
+  <main class="main-flex">
+    <div class="artwork-img-area" id="artwork-img">
+      <!-- Add your artwork image below -->
+      <!-- Example: -->
+      <!-- <img src="https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=600&q=80" alt="Artwork Title" /> -->
+    </div>
+    <div class="artwork-info-card">
+      <div class="artwork-title">Art Piece Name</div>
+      <div class="artwork-desc">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque faucibus ex sapien, vitae pellentesque sem placerat. In id cursus mi, pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
+      </div>
+      <button class="view-btn">View</button>
+    </div>
+  </main>
+  <nav class="bottom-bar">
+    <div class="nav-links">
+      <a class="nav-link" href="#">Home</a>
+      <a class="nav-link" href="#">Expo</a>
+    </div>
+  </nav>
+</body>
+</html>
