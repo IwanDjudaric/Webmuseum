@@ -6,247 +6,312 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     :root {
-      --bg-main: #f3f6f7;
-      --bg-card: #222c34;
-      --accent: #4682b4;
-      --border-card: #4682b4;
-      --text-main: #1c232b;
-      --text-light: #fff;
-      --shadow: 0 2px 16px rgba(34,44,52,0.10);
+      --bg-main: #D3DAD9;
+      --bg-card: #44444E;
+      --bg-art: #37353E;
+      --accent: #715A5A;
+      --text-main: #D3DAD9;
+      --text-dark: #37353E;
+      --shadow: 0 2px 14px rgba(55,53,62,0.10);
+      --radius: 12px;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      font-family: 'Inter', Arial, sans-serif;
+      background: var(--bg-main);
+      color: var(--text-main);
     }
     body {
-      margin: 0;
-      background: var(--bg-main);
-      font-family: 'Inter', Arial, sans-serif;
-      color: var(--text-main);
-      min-height: 100vh;
+      width: 100vw;
+      height: 100vh;
       display: flex;
       flex-direction: column;
+      align-items: stretch;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
     }
     .museum-label {
-      width: 100%;
-      background: var(--accent);
-      color: var(--text-light);
-      font-size: 1.7rem;
+      position: absolute;
+      left: 0;
+      top: 48px;
+      background: var(--bg-card);
+      color: var(--text-main);
+      font-size: 1.08rem;
       font-weight: 700;
       letter-spacing: 0.03em;
-      padding: 22px 0 14px 0;
-      text-align: right;
-      border-bottom-left-radius: 12px;
-      box-shadow: var(--shadow);
+      padding: 9px 26px 7px 18px;
+      box-shadow: 0 2px 10px rgba(55,53,62,0.07);
+      border-radius: var(--radius);
+      z-index: 10;
+      border: 2px solid var(--accent);
+      display: flex;
+      align-items: center;
+      min-width: 0;
+      max-width: 44vw;
+      white-space: nowrap;
+      pointer-events: none;
+      user-select: none;
     }
     .main-flex {
-      flex: 1;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0;
+      flex: 1 1 0;
+      display: flex;
+      flex-direction: row;
       align-items: center;
-      width: 100%;
-      max-width: 1200px;
-      margin: 0 auto;
-      position: relative;
-      padding: 2vw 0 90px 0;
+      justify-content: center;
+      width: 100vw;
+      height: 100vh;
+      min-width: 0;
+      min-height: 0;
+      gap: 3vw;
+      z-index: 2;
+      box-sizing: border-box;
     }
     .artwork-img-area {
-      background: var(--bg-card);
-      border: 6px solid var(--border-card);
-      border-radius: 22px;
+      background: var(--bg-art);
+      border-radius: var(--radius);
       box-shadow: var(--shadow);
+      border: 3px solid var(--bg-card);
+      position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
-      min-height: 350px;
-      height: 58vh;
-      margin: 0 2vw 0 2vw;
+      min-width: 0;
+      min-height: 0;
+      aspect-ratio: 16 / 9;
+      width: 40vw;
+      max-width: 50vw;
+      height: auto;
+      max-height: 64vh;
       overflow: hidden;
-      position: relative;
     }
     .artwork-img-area img {
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: contain;
-      border-radius: 12px;
-      background: #fff;
-      box-shadow: 0 2px 12px rgba(68,130,180,0.07);
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      border-radius: 8px;
+      background: #222;
+    }
+    .fullscreen-btn {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      background: var(--bg-card);
+      border: 2px solid var(--accent);
+      color: var(--text-main);
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 6;
+      transition: background 0.15s, border 0.15s;
+      box-shadow: 0 2px 6px rgba(55,53,62,0.11);
+      padding: 0;
+      outline: none;
+    }
+    .fullscreen-btn:focus,
+    .fullscreen-btn:hover {
+      background: var(--accent);
+      border-color: var(--text-main);
+    }
+    .fullscreen-btn svg {
+      width: 17px;
+      height: 17px;
+      fill: currentColor;
+      display: block;
+      pointer-events: none;
     }
     .artwork-info-card {
       background: var(--bg-card);
-      color: var(--text-light);
-      border: 6px solid var(--border-card);
-      border-radius: 22px;
+      color: var(--text-main);
+      border-radius: var(--radius);
       box-shadow: var(--shadow);
-      padding: 48px 36px 36px 36px;
-      margin-right: 2vw;
+      border: 3px solid var(--bg-art);
+      min-width: 0;
+      min-height: 0;
+      width: 40vw;
+      max-width: 44vw;
+      height: 64vh;
+      max-height: 70vh;
       display: flex;
       flex-direction: column;
-      gap: 24px;
-      min-height: 350px;
       justify-content: center;
-      align-items: flex-start;
+      gap: 12px;
+      padding: 38px 32px;
+      box-sizing: border-box;
+      overflow: hidden;
     }
     .artwork-title {
-      font-size: 2.7rem;
+      font-size: 1.7rem;
       font-weight: 900;
-      margin-bottom: 8px;
-      color: var(--accent);
-      text-shadow: 0 2px 8px rgba(68,130,180,0.11);
+      color: white;
+      margin-bottom: 10px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
     }
     .artwork-desc {
-      font-size: 1.18rem;
-      line-height: 1.7;
-      opacity: 0.95;
+      font-size: 1.04rem;
+      line-height: 1.6;
+      color: var(--text-main);
+      opacity: 0.97;
       font-weight: 400;
       letter-spacing: 0.01em;
       text-align: left;
-      text-shadow: 0 1px 4px rgba(68,130,180,0.05);
-    }
-    .view-btn {
-      position: absolute;
-      left: 2vw;
-      bottom: 30px;
-      background: var(--accent);
-      color: var(--text-light);
-      font-weight: 700;
-      font-size: 1.4rem;
-      letter-spacing: 0.06em;
-      padding: 13px 44px;
-      border-radius: 7px;
-      border: none;
-      box-shadow: 0 4px 24px rgba(68,130,180,0.13);
-      cursor: pointer;
-      text-transform: uppercase;
-      transition: background 0.19s, box-shadow 0.19s;
-      outline: none;
-      z-index: 5;
-    }
-    .view-btn:hover, .view-btn:focus {
-      background: #315d82;
-      box-shadow: 0 2px 22px rgba(68,130,180,0.19);
+      text-shadow: none;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 11;
+      -webkit-box-orient: vertical;
     }
     .bottom-bar {
-      width: 100vw;
-      position: fixed;
-      left: 0; bottom: 0;
-      background: var(--bg-card);
       display: flex;
+      flex-direction: row;
       align-items: center;
-      min-height: 54px;
       justify-content: center;
-      z-index: 200;
-      box-shadow: 0 -2px 12px rgba(68,130,180,0.12);
-      border-top: 2px solid var(--accent);
+      background: var(--bg-card);
+      width: 100vw;
+      height: 38px;
+      min-height: 38px;
+      position: absolute;
+      left: 0; bottom: 0;
+      z-index: 100;
+      border-top: 1.5px solid var(--accent);
+      box-shadow: 0 -2px 10px rgba(55,53,62,0.09);
+      padding: 0;
     }
     .nav-links {
       display: flex;
-      gap: 40px;
+      flex-direction: row;
+      gap: 24px;
+      min-width: 0;
     }
     .nav-link {
-      color: var(--text-light);
-      text-decoration: none;
-      font-size: 1.15rem;
-      font-weight: 600;
-      padding: 9px 32px;
-      border-radius: 7px;
+      color: var(--text-main);
       background: transparent;
+      text-decoration: none;
+      font-size: 0.99rem;
+      font-weight: 600;
+      padding: 4px 16px;
+      border-radius: 6px;
+      border: none;
+      outline: none;
+      cursor: pointer;
       transition: background 0.18s, color 0.18s;
       text-transform: uppercase;
-      outline: none;
-      border: none;
-      cursor: pointer;
+      min-width: 0;
+      min-height: 0;
     }
     .nav-link:hover, .nav-link:focus {
       background: var(--accent);
-      color: #fff;
+      color: var(--bg-main);
     }
-    @media (max-width: 900px) {
+    @media (max-width: 1050px) {
       .main-flex {
-        grid-template-columns: 1fr;
-        padding: 2vw 0 90px 0;
+        gap: 1.5vw;
       }
-      .artwork-img-area, .artwork-info-card {
-        margin: 0 4vw 18px 4vw;
-        min-height: 260px;
-        height: auto;
+      .artwork-img-area,
+      .artwork-info-card {
+        width: 47vw;
+        max-width: 98vw;
       }
       .artwork-info-card {
-        padding: 28px 16px 22px 16px;
-      }
-      .artwork-title {
-        font-size: 1.7rem;
-      }
-      .artwork-desc {
+        padding: 20px 10px;
         font-size: 1rem;
       }
-      .view-btn {
-        font-size: 1rem;
-        padding: 9px 28px;
-        left: 4vw;
-        bottom: 18px;
-      }
-    }
-    @media (max-width: 600px) {
       .museum-label {
-        font-size: 1.14rem;
-        padding: 10px 0 6px 0;
-        border-radius: 0 0 8px 0;
+        top: 22px;
+        font-size: 0.99rem;
+        padding: 6px 13px 3px 10px;
       }
+    }
+    @media (max-width: 700px), (max-height: 550px) {
       .main-flex {
-        padding: 0 0 74px 0;
+        flex-direction: column;
+        gap: 2vh;
       }
       .artwork-img-area, .artwork-info-card {
-        margin: 0 2vw 14px 2vw;
-        border-radius: 10px;
-        border-width: 3px;
-        min-height: 160px;
+        width: 97vw;
+        max-width: 99vw;
       }
       .artwork-info-card {
-        padding: 12px 6vw 14px 6vw;
-        gap: 16px;
+        height: 28vh;
+        max-height: 32vh;
+        padding: 8px 5vw;
       }
-      .artwork-title {
-        font-size: 1.08rem;
-        margin-bottom: 4px;
+      .artwork-img-area {
+        aspect-ratio: 16/9;
+        height: auto;
+        max-height: 32vh;
       }
-      .artwork-desc {
-        font-size: 0.93rem;
-      }
-      .view-btn {
-        font-size: 0.9rem;
-        padding: 7px 14px;
-        left: 6vw;
-        bottom: 10px;
-      }
-      .nav-link {
-        padding: 6px 12px;
-        font-size: 0.88rem;
+      .museum-label {
+        top: 8px;
+        font-size: 0.91rem;
+        padding: 3px 7px 2px 5px;
       }
       .bottom-bar {
-        min-height: 36px;
+        height: 28px;
+        min-height: 28px;
+      }
+      .nav-link {
+        padding: 2px 6px;
+        font-size: 0.85rem;
       }
     }
   </style>
 </head>
 <body>
-  <div class="museum-label">Online Museum</div>
-  <main class="main-flex">
-    <div class="artwork-img-area" id="artwork-img">
-      <!-- Add your artwork image below -->
-      <!-- Example: -->
-      <!-- <img src="https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=600&q=80" alt="Artwork Title" /> -->
+  <div class="museum-label">Online museum</div>
+  <div class="main-flex">
+    <div class="artwork-img-area" id="artwork-img-area">
+      <!-- Example artwork image, replace src as needed -->
+      <img src="images/Scherm_afbeelding 2025-10-01 om 11.54.04.png" alt="Artwork Title" id="artwork-img">
+      <button class="fullscreen-btn" id="fullscreen-btn" title="View fullscreen" aria-label="View fullscreen">
+        <svg viewBox="0 0 24 24">
+          <path d="M7 14H5v5h5v-2H7v-3zm12 5h-3v2h5v-5h-2v3zM7 5h3V3H5v5h2V5zm10 0v2h3v3h2V3h-5zm-8 2h6v10H9V7z"/>
+        </svg>
+      </button>
     </div>
     <div class="artwork-info-card">
       <div class="artwork-title">Art Piece Name</div>
       <div class="artwork-desc">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque faucibus ex sapien, vitae pellentesque sem placerat. In id cursus mi, pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
       </div>
-      <button class="view-btn">View</button>
     </div>
-  </main>
+  </div>
   <nav class="bottom-bar">
     <div class="nav-links">
-      <a class="nav-link" href="#">Home</a>
-      <a class="nav-link" href="#">Expo</a>
+      <a class="nav-link" href="../exposition/index.html">Home</a>
+      <a class="nav-link" href="../exposition/index.html">Expo</a>
     </div>
   </nav>
+  <script>
+    // Fullscreen logic for artwork image area
+    const fsBtn = document.getElementById('fullscreen-btn');
+    const artArea = document.getElementById('artwork-img-area');
+    fsBtn.addEventListener('click', function(e){
+      e.preventDefault();
+      if (!document.fullscreenElement) {
+        artArea.requestFullscreen && artArea.requestFullscreen();
+      } else {
+        document.exitFullscreen && document.exitFullscreen();
+      }
+    });
+    document.addEventListener('keydown', function(e){
+      if ((e.key === 'f' || e.key === 'F') && (e.ctrlKey || e.metaKey)) {
+        fsBtn.click();
+      }
+    });
+  </script>
 </body>
 </html>
