@@ -3,9 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Art Gallery</title>
+    <link rel="stylesheet" href="./style.css">
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.9.0/lib/p5.min.js"></script>
 </head>
 <body>
-    
+    <div class="header">
+        <span class="menu-icon">&#9776;</span>
+        <span class="title">art gallery</span>
+        <nav class="nav">
+            <a href="../home/index.html">Home</a>
+            <a href="../detail/index.html">More</a>
+            <a href="#">About</a>
+        </nav>
+    </div>
+    <div class="gallery-row">
+        <div class="gallery-thumb">
+            <div id="p5-sketch"></div>
+        </div>
+        <div class="gallery-thumb">
+            <img src="./Foto's/Scherm­afbeelding 2025-10-01 om 11.44.12.png" alt="Sunflowers">
+        </div>
+        <div class="gallery-thumb large">
+            <img src="./Foto's/Scherm­afbeelding 2025-10-01 om 11.44.53.png" alt="Night Watch">
+        </div>
+    </div>
+    <div class="divider">Art wall</div>
+    <div class="art-wall">
+        <div class="art-card">
+            <img src="./Foto's/Scherm­afbeelding 2025-10-01 om 11.53.33.png" alt="Still Life 1">
+            <div class="art-info">
+                <div class="desc">tekst</div>
+                <a href="../detail/index.html" class="details-btn">Details</a>
+            </div>
+        </div>
+        <div class="art-card">
+            <img src="./Foto's/Scherm­afbeelding 2025-10-01 om 11.54.04.png" alt="Still Life 2">
+            <div class="art-info">
+                <div class="desc">tekst</div>
+                <a href="../detail/index.html" class="details-btn">Details</a>
+            </div>
+        </div>
+    </div>
+    <script>
+      function setup() {
+        let cnv = createCanvas(150, 150);
+        cnv.parent('p5-sketch');
+      }
+      function draw() {
+        background(220);
+        fill(100, 150, 255);
+        ellipse(width/2, height/2, 80 + 20 * sin(frameCount * 0.05));
+      }
+    </script>
 </body>
 </html>
