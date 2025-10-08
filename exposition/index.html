@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="nl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Art Gallery</title>
     <link rel="stylesheet" href="./style.css">
     <script src="https://cdn.jsdelivr.net/npm/p5@1.9.0/lib/p5.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tone@14.8.49/build/Tone.min.js"></script>
 </head>
 <body>
     <div class="header">
@@ -24,7 +25,14 @@
             <img src="./Foto's/Scherm­afbeelding 2025-10-01 om 11.44.12.png" alt="Sunflowers">
         </div>
         <div class="gallery-thumb large">
-            <img src="./Foto's/Scherm­afbeelding 2025-10-01 om 11.44.53.png" alt="Night Watch">
+            <img src="./Foto's/Scherm­afbeelding 2025-10-01 om 11.44.53.png" alt="Night Watch1">
+        </div>
+        <div class="gallery-thumb large interactive-art" id="interactive-art-frame">
+            <!-- Interactief Tone.js kunstwerk -->
+            <div id="tone-art-info">
+                <span id="soundTitle"></span>
+                <span id="hint">Beweeg je muis over dit kunstwerk!</span>
+            </div>
         </div>
     </div>
     <div class="divider">Art wall</div>
@@ -45,6 +53,7 @@
         </div>
     </div>
     <script>
+      // p5 sketch
       function setup() {
         let cnv = createCanvas(150, 150);
         cnv.parent('p5-sketch');
@@ -54,6 +63,55 @@
         fill(100, 150, 255);
         ellipse(width/2, height/2, 80 + 20 * sin(frameCount * 0.05));
       }
+
+      // Tone.js kunstwerk
+      const sounds = [
+        { name: "Blije Melodie", play: () => {
+            const synth = new Tone.Synth().toDestination();
+            synth.triggerAttackRelease("C4", "8n");
+            synth.triggerAttackRelease("E4", "8n", "+0.2");
+            synth.triggerAttackRelease("G4", "8n", "+0.4");
+            synth.triggerAttackRelease("C5", "8n", "+0.6");
+          }
+        },
+        { name: "Kunstige Toonladder", play: () => {
+            const poly = new Tone.PolySynth(Tone.Synth).toDestination();
+            ["C4","D4","E4","G4","A4","C5"].forEach((note, i) => {
+              poly.triggerAttackRelease(note, "8n", Tone.now() + i*0.18);
+            });
+          }
+        },
+        { name: "Abstract geluid", play: () => {
+            const noise = new Tone.Noise("pink").toDestination();
+            noise.start();
+            setTimeout(()=>noise.stop(), 300);
+          }
+        },
+        { name: "Elektronische ping", play: () => {
+            const fm = new Tone.FMSynth().toDestination();
+            fm.triggerAttackRelease("C5", "16n");
+          }
+        }
+      ];
+      let soundIndex = 0;
+
+      const artFrame = document.getElementById("interactive-art-frame");
+      const soundTitle = document.getElementById("soundTitle");
+      const hint = document.getElementById("hint");
+
+      // Speel geluid bij mouseenter
+      artFrame.addEventListener("mouseenter", async () => {
+        await Tone.start();
+        sounds[soundIndex].play();
+        soundTitle.textContent = sounds[soundIndex].name;
+        hint.style.opacity = "0";
+        soundIndex = (soundIndex + 1) % sounds.length;
+        // Verberg titel na 1.5s
+        setTimeout(() => {
+          soundTitle.textContent = "";
+          hint.style.opacity = "1";
+        }, 1500);
+      });
     </script>
 </body>
 </html>
