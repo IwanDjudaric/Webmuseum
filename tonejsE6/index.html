@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tone.js Piano Soundboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/tone@next/build/Tone.js"></script>
+  <style>
+    body {
+      background: #222;
+      color: #fff;
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+    h1 { margin-bottom: 24px; }
+    .piano {
+      display: flex;
+      flex-direction: row;
+      margin: 20px 0;
+    }
+    .key {
+      width: 40px;
+      height: 180px;
+      margin: 0 2px;
+      border-radius: 4px;
+      border: 1px solid #444;
+      background: #fff;
+      color: #222;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      font-size: 18px;
+      cursor: pointer;
+      position: relative;
+      z-index: 1;
+      transition: background 0.1s;
+      user-select: none;
+    }
+    .key:active, .key.playing {
+      background: #ffd700;
+    }
+    .key.black {
+      background: #222;
+      color: #fff;
+      width: 28px;
+      height: 110px;
+      position: absolute;
+      margin-left: -14px;
+      z-index: 2;
+      border: 1px solid #111;
+    }
+    .key-label {
+      margin-bottom: 8px;
+      font-size: 12px;
+      opacity: 0.7;
+    }
+    .key-container {
+      position: relative;
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+  <h1>Tone.js Piano Soundboard</h1>
+  <div class="piano" id="piano"></div>
+  <p>Click the keys or use your keyboard (A S D F G H J W E T Y U for white/black keys)</p>
+  <script>
+    // Piano key data: note, label, keyboard key, isBlack
+    const keys = [
+      { note: 'C4', label: 'C', key: 'A', isBlack: false },
+      { note: 'C#4', label: 'C#', key: 'W', isBlack: true },
+      { note: 'D4', label: 'D', key: 'S', isBlack: false },
+      { note: 'D#4', label: 'D#', key: 'E', isBlack: true },
+      { note: 'E4', label: 'E', key: 'D', isBlack: false },
+      { note: 'F4', label: 'F', key: 'F', isBlack: false },
+      { note: 'F#4', label: 'F#', key: 'T', isBlack: true },
+      { note: 'G4', label: 'G', key: 'G', isBlack: false },
+      { note: 'G#4', label: 'G#', key: 'Y', isBlack: true },
+      { note: 'A4', label: 'A', key: 'H', isBlack: false },
+      { note: 'A#4', label: 'A#', key: 'U', isBlack: true },
+      { note: 'B4', label: 'B', key: 'J', isBlack: false },
+    ];
+
+
+
+    // Annoying synth chain: harsh waveform, distortion, bitcrusher, auto-wah, feedback delay
+    const annoyingSynth = new Tone.MonoSynth({
+      oscillator: { type: 'square' },
+      envelope: { attack: 0.001, decay: 0.01, sustain: 0.1, release: 2 },
+      filter: { Q: 24, type: 'highpass', rolloff: -24 },
+      filterEnvelope: { attack: 0.001, decay: 0.01, sustain: 0.1, release: 0.5, baseFrequency: 2000, octaves: 4 }
+    });
+    const crusher = new Tone.BitCrusher(6).toDestination();
+    const dist = new Tone.Distortion(0.8).connect(crusher);
+    const autoWah = new Tone.AutoWah(50, 10, -30).connect(dist);
+    const feedback = new Tone.FeedbackDelay('8n', 0.7).connect(autoWah);
+    annoyingSynth.connect(feedback);
+
+
+    // Render piano keys
+    const piano = document.getElementById('piano');
+    keys.forEach((k, i) => {
+      if (!k.isBlack) {
+        // White key container
+        const container = document.createElement('div');
+        container.className = 'key-container';
+        // White key
+        const key = document.createElement('div');
+        key.className = 'key';
+        key.dataset.note = k.note;
+        key.innerHTML = `<div class='key-label'>${k.key}</div>${k.label}`;
+        container.appendChild(key);
+        // Black key (if next is black)
+        if (keys[i+1] && keys[i+1].isBlack) {
+          const black = document.createElement('div');
+          black.className = 'key black';
+          black.dataset.note = keys[i+1].note;
+          black.innerHTML = `<div class='key-label'>${keys[i+1].key}</div>${keys[i+1].label}`;
+          container.appendChild(black);
+        }
+        piano.appendChild(container);
+      }
+    });
+
+
+    // Play annoying synth note
+    function playNote(note, el) {
+      annoyingSynth.triggerAttackRelease(note, '16n');
+      if (el) {
+        el.classList.add('playing');
+        setTimeout(() => el.classList.remove('playing'), 120);
+      }
+    }
+
+
+    // Mouse events
+    piano.addEventListener('mousedown', e => {
+      const key = e.target.closest('.key');
+      if (key) playNote(key.dataset.note, key);
+    });
+
+    // Keyboard events
+    document.addEventListener('keydown', e => {
+      if (e.repeat) return;
+      const k = keys.find(k => k.key === e.key.toUpperCase());
+      if (k) {
+        const el = [...document.querySelectorAll('.key')].find(el => el.dataset.note === k.note);
+        playNote(k.note, el);
+      }
+    });
+
+    // (No sample loading needed for synth)
+
+    // (MP3 upload logic removed)
+  </script>
+</body>
+</html>
